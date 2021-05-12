@@ -49,11 +49,16 @@ public class Orders {
 				String date = rs.getDate("created_at").toString();
 				String status = rs.getString("Status");
 				String address = rs.getString("ShippingAddress");
+				String paySlip = rs.getString("PaymentSlipUrl");
 				String totalAmount = Double.toString(rs.getDouble("TotalAmount"));
 
 				output += "<div class=\"card\" style=\"width: 32rem;\">\r\n"
 						+ "						<div class=\"card-body\">\r\n"
 						+ "							<div class=\"row\">\r\n"
+						+"<input id=\"c_OrderId\" value='" + orderId + "' type ='hidden'>"
+						+"<input id=\"c_BuyerId\" value='" + buyerId + "' type ='hidden'>"
+						+"<input id=\"c_Address\" value='" + address + "' type ='hidden'>"
+						+"<input id=\"c_PaySlip\" value='" + paySlip + "' type ='hidden'>"
 						+ "								<div class=\"col\">\r\n"
 						+ "									<h6 class=\"card-title\">Order ID :" + orderId + "</h6>\r\n"
 						+ "									<h6 class=\"card-subtitle mb-2 text-muted\">" + date
@@ -297,6 +302,8 @@ public class Orders {
 				output = "<h6>Your order has been shipped therefore you cannot change the shipping address<h6>";
 				sAdr = currentSA;
 			}
+			
+			sAdr = getShippingAddress(shippingAddress, String.valueOf(buyerId));
 
 			// Update order details in order detail table
 			OrderDetails orderDetails = new OrderDetails();
@@ -644,6 +651,30 @@ public class Orders {
 			output = "Error while reading the records.";
 			System.err.println(e.getMessage());
 		}
+		return output;
+	}
+	
+	public String updatePayment(String url, int orderId) {
+		String output = null;
+		try {
+			Connection con = ConnectDB.connect();
+			if (con == null) {
+				output = "Error while connecting to the database for reading.";
+				return output;
+			}
+			
+			String query1 = "UPDATE `orders` SET PaymentSlipUrl	= ? WHERE OrderId = ?";
+			PreparedStatement preparedStatement1 = con.prepareStatement(query1);
+			preparedStatement1.setString(1, url);
+			preparedStatement1.setInt(2, orderId);
+			preparedStatement1.execute();
+			
+			output = "Updated Successfully";
+		}catch (Exception e) {
+			output = "Error while updating the records.";
+			System.err.println(e.getMessage());
+		}
+		
 		return output;
 	}
 }

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -82,51 +85,62 @@ public class OrdersAPI extends HttpServlet {
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		StringBuffer jb = new StringBuffer();
+		  String line = null;
+		  JsonObject jsonObject;
+		  try {
+		    BufferedReader reader = request.getReader();
+		    while ((line = reader.readLine()) != null)
+		      jb.append(line);
+		  } catch (Exception e) { /*report an error*/ }
+
+		  try {
+			  jsonObject = new JsonParser().parse(jb.toString()).getAsJsonObject();
+		  } catch (JSONException e) {
+		    // crash and burn
+		    throw new IOException("Error parsing JSON request string");
+		  }
+		  
+		  System.out.println(jsonObject);
+		String buyerId = jsonObject.get("buyerId").toString();
+		String shippingAddress = jsonObject.get("address").toString();
+		System.out.println("sHIPPING ADDRES - " + shippingAddress);
+		String paySlip = jsonObject.get("paySlip").toString();
+		String orderId = jsonObject.get("orderId").toString();
+		JsonArray orderDetails = jsonObject.get("orderDetails").getAsJsonArray();
+		
+		String output = orders.updateOrder(Integer.parseInt(orderId), Integer.parseInt(buyerId), shippingAddress, orderDetails);
+		
+		
+		output += orders.updatePayment(paySlip, Integer.parseInt(orderId));
+		response.getWriter().write(output);
 	}
 
 	/**
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		Map paras = getParasMap(request);
+		String output = orders.deleteOrder(paras.get("id").toString());
+		response.getWriter().write(output);
 	}
 	
+	// Convert request parameters to a Map
+		private static Map getParasMap(HttpServletRequest request) {
+			Map<String, String> map = new HashMap<String, String>();
+			try {
+				Scanner scanner = new Scanner(request.getInputStream(), "UTF-8");
+				String queryString = scanner.hasNext() ? scanner.useDelimiter("\\A").next() : "";
+				scanner.close();
+				String[] params = queryString.split("&");
+				for (String param : params) {
+					String[] p = param.split("=");
+					map.put(p[0], p[1]);
+				}
+			} catch (Exception e) {
+			}
+			return map;
+		}
 	
-	public static String getBody(HttpServletRequest request)  {
-
-	    String body = null;
-	    StringBuilder stringBuilder = new StringBuilder();
-	    BufferedReader bufferedReader = null;
-
-	    try {
-	        InputStream inputStream = request.getInputStream();
-	        if (inputStream != null) {
-	            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-	            char[] charBuffer = new char[128];
-	            int bytesRead = -1;
-	            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-	                stringBuilder.append(charBuffer, 0, bytesRead);
-	            }
-	        } else {
-	            stringBuilder.append("");
-	        }
-	    } catch (IOException ex) {
-	        // throw ex;
-	        return "";
-	    } finally {
-	        if (bufferedReader != null) {
-	            try {
-	                bufferedReader.close();
-	            } catch (IOException ex) {
-
-	            }
-	        }
-	    }
-
-	    body = stringBuilder.toString();
-	    System.out.println(body);
-	    return body;
-	}
 
 }

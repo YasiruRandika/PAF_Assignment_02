@@ -81,14 +81,15 @@
 					<h4>GB Order System</h4>
 					<hr>
 					<!-- Order Details User Input -->
+					 <input type="hidden" id="orderIdU" name="orderId">
 					<label class="form-label">User Details</label> <input type="text"
-						class="form-control" id="buyerId" name="buyerId"
+						class="form-control" id="buyerIdU" name="buyerId"
 						placeholder="Buyer Id" aria-label="Buyer Id"> <input
-						type="text" class="form-control" id="address" name="address"
+						type="text" class="form-control" id="addressU" name="address"
 						placeholder="Shipping Address" aria-label="Shipping Address">
 					<!-- Order Product Details User Input -->
 					<br> <label class="form-label">Products Details</label>
-					<table class="table" id="tableProducts">
+					<table class="table" id="tableProductsCard">
 						<thead>
 							<tr>
 								<th scope="col">Product Id</th>
@@ -97,17 +98,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><input type="text" class="form-control pInputs">
-								</td>
-								<td><input type="number" class="form-control pInputs"></td>
-								<td><button type="button" id="removeProduct"
-										class="btn btn-danger btn-sm">Remove</button></td>
-							</tr>
+							
 						</tbody>
 					</table>
 
-					<button type="button" id="btnAddProduct"
+					<button type="button" id="btnAddProductUp"
 						class="btn btn-outline-primary btn-sm">
 						<i class="bi bi-cart-plus-fill"></i>
 					</button>
