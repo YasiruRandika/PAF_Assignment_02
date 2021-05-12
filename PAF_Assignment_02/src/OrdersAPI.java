@@ -104,15 +104,14 @@ public class OrdersAPI extends HttpServlet {
 		  System.out.println(jsonObject);
 		String buyerId = jsonObject.get("buyerId").toString();
 		String shippingAddress = jsonObject.get("address").toString();
-		System.out.println("sHIPPING ADDRES - " + shippingAddress);
 		String paySlip = jsonObject.get("paySlip").toString();
 		String orderId = jsonObject.get("orderId").toString();
 		JsonArray orderDetails = jsonObject.get("orderDetails").getAsJsonArray();
 		
 		String output = orders.updateOrder(Integer.parseInt(orderId), Integer.parseInt(buyerId), shippingAddress, orderDetails);
+		System.out.println(output);
 		
-		
-		output += orders.updatePayment(paySlip, Integer.parseInt(orderId));
+		orders.updatePayment(paySlip, Integer.parseInt(orderId));
 		response.getWriter().write(output);
 	}
 

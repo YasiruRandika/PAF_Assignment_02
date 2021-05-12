@@ -324,25 +324,23 @@ $(document).on(
 				type : "PUT",
 				data : jsonInput,
 				contentType : "application/json",
-				dataType : 'json',
 				complete : function(response, status) {
 					console.log(response.responseText);
-					if (status == "success") {
-						console.log("Updated Suc");
-						$("#paymentFormAlert").text(
-								"Order placed Successfully and Add payment slip of LKR "
-										+ resultSet.total
-										+ " to proceed the order.");
-						$("#paymentForm").show();
-						$("#orderIdP").val(resultSet.id);
-						$("#paymentForm").find('input').removeClass(
-								'is-invalid');
+					console.log(status);
+					var resultSet = JSON.parse(response);
+					if (resultSet.status.trim() == "success") {
+						$("#initialform").show();
+						$("#initialform").find('input').removeClass('is-invalid');
+						$("#tableProductsCard").find('tbody').html(resultSet.data);
+					} else if (resultSet.status.trim() == "error") {
+						//$("#alertError").text(resultSet.data);
+						//$("#alertError").show();
 					}
 				}
 			});
-			$("#initialform")[0].reset();
-			$("#initialform").find('input').removeClass('is-valid')
+			$("#updateForm")[0].reset();
+			$("#updateForm").find('input').removeClass('is-valid')
 					.removeClass('is-invalid');
-			$("#initialform").hide();
+			$("#updateForm").hide();
 			pRowCount = 1;
 		});

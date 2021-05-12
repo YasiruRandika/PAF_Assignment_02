@@ -176,7 +176,7 @@ public class Orders {
 			preparedStmt3.execute();
 
 			con.close();
-			output = "{\"id\" : " + orderId + ",\"total\" : " + total + "}";
+			output = "{\"id\" : " + orderId + ",\"total\" : " + total + " , \"data\" : " + getAllOrders() + "}";
 		} catch (Exception e) {
 			output = "Error while inserting data";
 			System.err.println(e.getMessage());
@@ -250,7 +250,7 @@ public class Orders {
 			// execute the statement
 			preparedStmt1.execute();
 
-			output = "Order Deleted Successfully";
+			output = " { \"data\" : " + getAllOrders() + "}";
 
 			// Close the connection
 			con.close();
@@ -337,6 +337,7 @@ public class Orders {
 
 			con.close();
 			output += "<h5>Update operation successfully executed. Check whehter some errors in the description<h5>";
+			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
 		} catch (Exception e) {
 			output = "Error while updating data";
 			System.err.println(e.getMessage());
@@ -366,6 +367,7 @@ public class Orders {
 
 			con.close();
 			output = "Payment Slip Successfully added to the order. Wait till get accept the payment by GB Online.";
+			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
 		} catch (Exception e) {
 			output = "Error while inserting data";
 			System.err.println(e.getMessage());
@@ -670,6 +672,7 @@ public class Orders {
 			preparedStatement1.execute();
 			
 			output = "Updated Successfully";
+			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
 		}catch (Exception e) {
 			output = "Error while updating the records.";
 			System.err.println(e.getMessage());
