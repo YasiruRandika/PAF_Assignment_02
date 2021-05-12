@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	$("#paymentForm").hide();
 	$("#updateForm").hide();
+	$("#alertOk").hide();
+	$("#alertError").hide();
 });
 
 var pRowCount = 1;
@@ -80,11 +82,10 @@ $(document).on(
 			// Form validation-------------------
 			var status = validateOrderForm();
 			if (status != true) {
-				// $("#alertError").text(status);
-				// $("#alertError").show();
+				 $("#alertError").text("Errors with Data Validations");
+				 $("#alertError").show();
 				return;
 			}
-			console.log("Proced 3456");
 			var jsonInput = "{\"buyerId\" : "
 					+ $("#initialform").find('#buyerId').val()
 					+ ", \"address\" : "
@@ -108,9 +109,9 @@ $(document).on(
 				type : "POST",
 				data : jsonInput,
 				contentType : "application/json",
-				dataType : 'json',
+				dataType : 'text',
 				complete : function(response, status) {
-					console.log(response.responseText);
+					console.log(status);
 					if (status == "success") {
 						var resultSet = JSON.parse(response.responseText);
 						$("#paymentFormAlert").text(
@@ -121,13 +122,19 @@ $(document).on(
 						$("#orderIdP").val(resultSet.id);
 						$("#paymentForm").find('input').removeClass(
 								'is-invalid');
+						$("#alertOk").hide();
+						$("#alertError").hide();
 					}
 				}
 			});
 			$("#initialform")[0].reset();
+			$("#initialform").find('tbody').empty();
+			$("#initialform").find('tbody').append("<tr> <td><input type='text' id='pId' class='form-control pInputs'></td> <td><input type='number' id='quantity' class='form-control pInputs'></td> <td><button type='button' id='removeProduct' class='btn btn-danger btn-sm'>Remove</button></td> </tr>");
 			$("#initialform").find('input').removeClass('is-valid')
 					.removeClass('is-invalid');
 			$("#initialform").hide();
+			$("#alertOk").hide();
+			$("#alertError").hide();
 			pRowCount = 1;
 		});
 
@@ -151,9 +158,13 @@ $(document).on(
 		"click",
 		"#proceed",
 		function(event) {
+			$("#alertOk").hide();
+			$("#alertError").hide();
 			var status = validatePaymentForm();
 
 			if (status != true) {
+				$("#alertError").text("Erros with Data Validations");
+				 $("#alertError").show();
 				return;
 			}
 
@@ -163,10 +174,17 @@ $(document).on(
 				data : $("#paymentForm").serialize(),
 				dataType : "text",
 				complete : function(response, status) {
+					
 					if (status == "success") {
 						$("#initialform").show();
-						$("#initialform").find('input').removeClass(
-								'is-invalid');
+						$("#initialform").find('input').removeClass('is-invalid');
+						$("#cardContainer").empty();
+						$("#cardContainer").html(response.responseText);
+						$("#alertOk").text("Successfully Added the payment record.");
+						$("#alertOk").show();
+					} else  {
+						$("#alertError").text("Error While Adding Records");
+						$("#alertError").show();
 					}
 				}
 			});
@@ -180,6 +198,8 @@ $(document).on(
 
 // Delete Order
 $(document).on("click", "#btnCancelOrder", function(event) {
+	$("#alertOk").hide();
+	$("#alertError").hide();
 	console.log("Remove Button Clicked");
 	var orderId = $(this).closest(".card").find('#c_OrderId').val();
 	$.ajax({
@@ -189,13 +209,23 @@ $(document).on("click", "#btnCancelOrder", function(event) {
 		dataType : "text",
 		complete : function(response, status) {
 			// onItemDeleteComplete(response.responseText, status);
-			console.log(response.responseText);
+			if (status == "success") {
+				$("#cardContainer").empty();
+				$("#cardContainer").html(response.responseText);
+				$("#alertOk").text("Successfully Deleted the record");
+				$("#alertOk").show();
+			} else  {
+				$("#alertError").text("Error While Deleting Data");
+				$("#alertError").show();
+			}
 		}
 	});
 });
 
 // Update Order
 $(document).on("click", "#btnEditOrder", function(event) {
+	$("#alertOk").hide();
+	$("#alertError").hide();
 	$("#updateForm")[0].reset();
 	$('#updateForm').find('#tableProductsCard').find('tbody').empty();
 	$('#updateForm').find('#buyerIdU').val($(this).closest('.card').find('#c_BuyerId').val());
@@ -226,6 +256,8 @@ $(document).on("click", "#btnEditOrder", function(event) {
 //Add Product Row in Update Form
 $(document).on("click", "#btnAddProductUp", function(event) {
 	console.log("ButtonClick");
+	$("#alertOk").hide();
+	$("#alertError").hide();
 	$("#tableProductsCard").each(function() {
 		var tds = '<tr>';
 		jQuery.each($('tr:last td', this), function() {
@@ -291,12 +323,14 @@ $(document).on(
 		"click",
 		"#updateOrder",
 		function(event) {
+			$("#alertOk").hide();
+			$("#alertError").hide();
 			// Form validation-------------------
 			var status = validateUpdateForm();
 			console.log("Status"  +status);
 			if (status != true) {
-				// $("#alertError").text(status);
-				// $("#alertError").show();
+				$("#alertError").text("Erros with Data Validations");
+				 $("#alertError").show();
 				return;
 			}
 			console.log("Proced 3456");
@@ -324,17 +358,18 @@ $(document).on(
 				type : "PUT",
 				data : jsonInput,
 				contentType : "application/json",
+				dataType : "text", 
 				complete : function(response, status) {
-					console.log(response.responseText);
-					console.log(status);
-					var resultSet = JSON.parse(response);
-					if (resultSet.status.trim() == "success") {
+					if (status == "success") {
 						$("#initialform").show();
 						$("#initialform").find('input').removeClass('is-invalid');
-						$("#tableProductsCard").find('tbody').html(resultSet.data);
-					} else if (resultSet.status.trim() == "error") {
-						//$("#alertError").text(resultSet.data);
-						//$("#alertError").show();
+						$("#cardContainer").empty();
+						$("#cardContainer").html(response.responseText);
+						$("#alertOk").text("Successfully Updated the record");
+						$("#alertOk").show();
+					} else  {
+						$("#alertError").text("Error While Updating Data");
+						$("#alertError").show();
 					}
 				}
 			});

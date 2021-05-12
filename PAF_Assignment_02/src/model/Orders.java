@@ -52,44 +52,54 @@ public class Orders {
 				String paySlip = rs.getString("PaymentSlipUrl");
 				String totalAmount = Double.toString(rs.getDouble("TotalAmount"));
 
-				output += "<div class=\"card\" style=\"width: 32rem;\">\r\n"
-						+ "						<div class=\"card-body\">\r\n"
-						+ "							<div class=\"row\">\r\n"
-						+"<input id=\"c_OrderId\" value='" + orderId + "' type ='hidden'>"
-						+"<input id=\"c_BuyerId\" value='" + buyerId + "' type ='hidden'>"
-						+"<input id=\"c_Address\" value='" + address + "' type ='hidden'>"
-						+"<input id=\"c_PaySlip\" value='" + paySlip + "' type ='hidden'>"
-						+ "								<div class=\"col\">\r\n"
-						+ "									<h6 class=\"card-title\">Order ID :" + orderId + "</h6>\r\n"
-						+ "									<h6 class=\"card-subtitle mb-2 text-muted\">" + date
-						+ "</h6>\r\n" + "								</div>\r\n"
-						+ "								<div class=\"col\">\r\n"
-						+ "									<span class=\"badge bg-success\">" + totalAmount
-						+ "</span> <span\r\n"
-						+ "										class=\"badge bg-primary\">"+ status+ "</span>\r\n"
-						+ "								</div>\r\n"
-						+ "								<div class=\"col\">\r\n"
-						+ "									<button type=\"button\" style=\"float: right; margin-left: 10px\"\r\n"
-						+ "										id=\"btnCancelOrder\" class=\"btn btn-outline-danger btn-sm\">\r\n"
-						+ "										<i class=\"bi bi-trash\"></i>\r\n"
-						+ "									</button>\r\n"
-						+ "									<button type=\"button\" style=\"float: right\" id=\"btnEditOrder\"\r\n"
-						+ "										class=\"btn btn-outline-warning btn-sm\">\r\n"
-						+ "										<i class=\"bi bi-pencil\"></i>\r\n"
-						+ "									</button>\r\n" + "								</div>\r\n"
-						+ "							</div>\r\n"
-						+ "							<div style=\"color: graytext;\">\r\n"
-						+ "								<h8>Buyer Id :" + buyerId + "</h8>\r\n"
-						+ "								<br>\r\n"
-						+ "								<h8>Shipping Address : " + address + "</h8>\r\n"
-						+ "							</div>\r\n"
-						+ "							<br><table class=\"table table-sm\" id=\"tableProductsDisplay\">\r\n"
-						+ "								<thead>\r\n" + "									<tr>\r\n"
-						+ "										<th scope=\"col\">Product Id</th>\r\n"
-						+ "										<th scope=\"col\">Quantity</th>\r\n"
-						+ "										<th scope=\"col\">Status</th>\r\n"
-						+ "									</tr>\r\n" + "								</thead>\r\n"
-						+ "								<tbody>";
+				output += "<div class='card' style='width: 32rem'>\r\n" + 
+						"  <div class='card-body'>\r\n" + 
+						"    <div class='row'>\r\n" 
+						+"<input id='c_OrderId' value='" + orderId + "' type ='hidden'>"
+						+"<input id='c_BuyerId' value='" + buyerId + "' type ='hidden'>"
+						+"<input id='c_Address' value='" + address + "' type ='hidden'>"
+						+"<input id='c_PaySlip' value='" + paySlip + "' type ='hidden'>"+
+						"      <div class='col'>\r\n" + 
+						"        <h6 class='card-title'>Order ID :" + orderId+"</h6>\r\n" + 
+						"        <h6 class='card-subtitle mb-2 text-muted'>2021-05-19</h6>\r\n" + 
+						"      </div>\r\n" + 
+						"      <div class='col'>\r\n" + 
+						"        <span class='badge bg-success'>"+ totalAmount+"</span>\r\n" + 
+						"        <span class='badge bg-primary'>"+status+"</span>\r\n" + 
+						"      </div>\r\n" + 
+						"      <div class='col'>\r\n" + 
+						"        <button\r\n" + 
+						"          type='button'\r\n" + 
+						"          style='float: right; margin-left: 10px'\r\n" + 
+						"          id='btnCancelOrder'\r\n" + 
+						"          class='btn btn-outline-danger btn-sm'\r\n" + 
+						"        >\r\n" + 
+						"          <i class='bi bi-trash'></i>\r\n" + 
+						"        </button>\r\n" + 
+						"        <button\r\n" + 
+						"          type='button'\r\n" + 
+						"          style='float: right'\r\n" + 
+						"          id='btnEditOrder'\r\n" + 
+						"          class='btn btn-outline-warning btn-sm'\r\n" + 
+						"        >\r\n" + 
+						"          <i class='bi bi-pencil'></i>\r\n" + 
+						"        </button>\r\n" + 
+						"      </div>\r\n" + 
+						"    </div>\r\n" + 
+						"    <div style='color: graytext'>\r\n" + 
+						"      <h8>Buyer Id : 0001</h8>\r\n" + 
+						"      <br />\r\n" + 
+						"      <h8>Shipping Address :"+ address+"</h8>\r\n" + 
+						"    </div>\r\n" + 
+						"    <table class='table' id='tableProductsDisplay'>\r\n" + 
+						"      <thead>\r\n" + 
+						"        <tr>\r\n" + 
+						"          <th scope='col'>Product Id</th>\r\n" + 
+						"          <th scope='col'>Quantity</th>\r\n" + 
+						"          <th scope='col'>Status</th>\r\n" + 
+						"        </tr>\r\n" + 
+						"      </thead>\r\n" + 
+						"      <tbody>";
 				
 				String qu = "select * from OrderDetails WHERE OrderId = ?";
 				PreparedStatement st = con.prepareStatement(qu);
@@ -101,14 +111,16 @@ public class Orders {
 					String quantity = res.getString("Quantity");
 					String sta = res.getString("Status");
 					
-					output += "<tr>\r\n" + 
-							"										<td>" + productId + "</td>\r\n" + 
-							"										<td>" + quantity + "</td>\r\n" + 
-							"										<td>" + sta +"</td>\r\n" + 
-							"									</tr>";
+					output += " <tr>\r\n" + 
+							"          <td>" + productId+  "</td>\r\n" + 
+							"          <td>" + quantity+  "</td>\r\n" + 
+							"          <td>" + sta+  "</td>\r\n" + 
+							"        </tr>";
  				}
-				output += "</tbody>\r\n" + "							</table>\r\n" + "\r\n"
-						+ "						</div>\r\n" + "					</div>";
+				output += " </tbody>\r\n" + 
+						"    </table>\r\n" + 
+						"  </div>\r\n" + 
+						"</div>";
 			
 			}
 			con.close();
@@ -176,7 +188,7 @@ public class Orders {
 			preparedStmt3.execute();
 
 			con.close();
-			output = "{\"id\" : " + orderId + ",\"total\" : " + total + " , \"data\" : " + getAllOrders() + "}";
+			output = "{\"id\" : " + orderId + ",\"total\" : " + total + "}";
 		} catch (Exception e) {
 			output = "Error while inserting data";
 			System.err.println(e.getMessage());
@@ -250,7 +262,7 @@ public class Orders {
 			// execute the statement
 			preparedStmt1.execute();
 
-			output = " { \"data\" : " + getAllOrders() + "}";
+			output = getAllOrders();
 
 			// Close the connection
 			con.close();
@@ -337,7 +349,7 @@ public class Orders {
 
 			con.close();
 			output += "<h5>Update operation successfully executed. Check whehter some errors in the description<h5>";
-			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
+			output =  getAllOrders();
 		} catch (Exception e) {
 			output = "Error while updating data";
 			System.err.println(e.getMessage());
@@ -367,7 +379,10 @@ public class Orders {
 
 			con.close();
 			output = "Payment Slip Successfully added to the order. Wait till get accept the payment by GB Online.";
-			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
+			output = getAllOrders();
+			
+			
+
 		} catch (Exception e) {
 			output = "Error while inserting data";
 			System.err.println(e.getMessage());
@@ -672,12 +687,16 @@ public class Orders {
 			preparedStatement1.execute();
 			
 			output = "Updated Successfully";
-			output = "{\"message\" : " + output +", \"data\" : " + getAllOrders() + "}";
+			output = "{\"data\" : " + getAllOrders().toString() + "}";
 		}catch (Exception e) {
 			output = "Error while updating the records.";
 			System.err.println(e.getMessage());
 		}
 		
 		return output;
+	}
+	
+	public void addSuccessToast(String msg) {
+		
 	}
 }

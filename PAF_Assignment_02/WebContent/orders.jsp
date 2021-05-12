@@ -20,6 +20,7 @@
 </head>
 <body>
 	<div class="container">
+	
 		<div class="row row-cols-auto">
 			<div class="col-sm-12 col-md-6">
 				<form id="initialform" name="initialform">
@@ -97,7 +98,7 @@
 								<th></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="dataIns">
 							
 						</tbody>
 					</table>
@@ -114,9 +115,16 @@
 					<button class="btn btn-primary" type="button" id="updateOrder">Update
 						Order</button>
 				</form>
+				<div class="alertContainer">
+				<div class="alert alert-danger" id = "alertError" role="alert">
+  A simple primary alert—check it out!
+</div>
+<div class="alert alert-success" id = "alertOk" role="alert">
+  A simple secondary alert—check it out!
+</div></div>
 			</div>
 			<div class="col-sm-12 col-md-6">
-				<div class="container">
+				<div class="container" id="cardContainer">
 					<%
 					Orders orders = new Orders();
 					out.print(orders.getAllOrders());
@@ -126,5 +134,6 @@
 			</div>
 		</div>
 	</div>
+	
 </body>
 </html>

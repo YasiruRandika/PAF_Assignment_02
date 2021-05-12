@@ -18,6 +18,11 @@ input {
 	max-width: 120px;
 }
 
+.alertContainer {
+	margin-top:20px;
+	max-width: 400px !important;
+}
+
 .card {
 	margin-bottom: 10px;
 }
