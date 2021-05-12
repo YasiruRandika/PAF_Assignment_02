@@ -235,10 +235,11 @@ $(document).on("click", "#btnEditOrder", function(event) {
 	var tb = "";
 	pRowCount = 0;
 	jQuery.each($('tr', $(this).closest(".card").find("#tableProductsDisplay").find("tbody")), function() {
+		console.log($(this))
 		tb += "<tr>" + 
-		"<td><input type=\"text\" id=\"pId\" class=\"form-control pInputs\" value = '" + $(this).closest(".card").find("#tableProductsDisplay").find("tbody").find('td:eq(0)').text() +"'>"+
+		"<td><input type=\"text\" id=\"pId\" class=\"form-control pInputs\" value = '" + $(this).find('td:eq(0)').text() +"'>"+
 		"</td>"+
-		"<td><input type=\"number\" id=\"quantity\" class=\"form-control pInputs\" value = '" +$(this).closest(".card").find("#tableProductsDisplay").find("tbody").find('td:eq(1)').text()  +"'></td>"+
+		"<td><input type=\"number\" id=\"quantity\" class=\"form-control pInputs\" value = '" +$(this).find('td:eq(1)').text()  +"'></td>"+
 		"<td><button type=\"button\" id=\"removeProduct\"+ class=\"btn btn-danger btn-sm\">Remove</button></td>"
 							+"</tr>"
 		pRowCount += 1;

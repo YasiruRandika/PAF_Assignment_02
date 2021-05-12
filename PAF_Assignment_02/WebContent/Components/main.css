@@ -26,3 +26,13 @@ input {
 .card {
 	margin-bottom: 10px;
 }
+
+#bg {
+  position: fixed; 
+  top: 50%; 
+  left: 20%; 
+  z-index:-1;
+
+  /* Preserve aspet ratio */
+  height: 80%;
+}

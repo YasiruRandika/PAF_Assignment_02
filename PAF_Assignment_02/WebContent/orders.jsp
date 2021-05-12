@@ -19,6 +19,7 @@
 	crossorigin="anonymous">
 </head>
 <body>
+<img src="Components/bg.png" id="bg" alt="">
 	<div class="container">
 	
 		<div class="row row-cols-auto">
